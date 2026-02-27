@@ -53,6 +53,7 @@ class QuestionService {
     required String answer4,
     required String correctAnswer,
   }) {
+    print("Question $question, Answer: $answer1 ");
     _db.execute(
       "UPDATE questions SET question = '$question', answer1 = '$answer1', answer2 = '$answer2', answer3 = '$answer3', answer4 = '$answer4', correctAnswer = '$correctAnswer' WHERE id ='$questionId'",
     );

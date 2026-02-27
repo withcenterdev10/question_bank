@@ -74,11 +74,11 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
   void onSubmit(BuildContext context) {
     if (formKey.currentState!.validate()) {
       final question = questionController.text;
-      final answer1 = questionController.text;
-      final answer2 = questionController.text;
-      final answer3 = questionController.text;
-      final answer4 = questionController.text;
-      final correctAnswer = questionController.text;
+      final answer1 = answer1Controller.text;
+      final answer2 = answer2Controller.text;
+      final answer3 = answer3Controller.text;
+      final answer4 = answer4Controller.text;
+      final correctAnswer = correctAnswerController.text;
 
       context.read<QuestionState>().updatedQuestion(
         questionId: widget.questionId,
