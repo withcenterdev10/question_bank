@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_friday_test/db.dart';
 import 'package:flutter_friday_test/models/question_model.dart';
+import 'package:flutter_friday_test/screens/home/home_screen.dart';
 import 'package:flutter_friday_test/screens/questions/questions_screen.dart';
 import 'package:flutter_friday_test/states/question_state.dart';
 import 'package:go_router/go_router.dart';
@@ -36,13 +37,6 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
   initState() {
     super.initState();
 
-    // questionController = TextEditingController(text: "hehe");
-    // answer1Controller = TextEditingController(text: "hehe");
-    // answer2Controller = TextEditingController(text: "hehe");
-    // answer3Controller = TextEditingController(text: "hehe");
-    // answer4Controller = TextEditingController(text: "hehe");
-    // correctAnswerController = TextEditingController(text: "hehe");
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final question = context.read<QuestionState>().fetchQuestion(
         widget.questionId,
@@ -67,7 +61,7 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
     answer3Controller.dispose();
     answer4Controller.dispose();
     correctAnswerController.dispose();
-
+    // context.read<QuestionState>().clearState();
     super.dispose();
   }
 
@@ -111,7 +105,17 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
     });
 
     return Scaffold(
-      appBar: AppBar(title: Text("View Question ${widget.questionId}")),
+      appBar: AppBar(
+        title: Text("View Question ${widget.questionId}"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              HomeScreen.go(context);
+            },
+            icon: Icon(Icons.close),
+          ),
+        ],
+      ),
       body: isSet
           ? CircularProgressIndicator()
           : Form(

@@ -9,6 +9,11 @@ class QuestionState extends ChangeNotifier {
   QuestionState({required this.repository});
   QuestionRepository repository;
 
+  void clearState() {
+    selectedQuestion = null;
+    notifyListeners();
+  }
+
   void createQuestion({
     required String question,
     required String answer1,

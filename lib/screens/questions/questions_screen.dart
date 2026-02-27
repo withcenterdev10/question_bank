@@ -56,7 +56,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("View Questions"),
+        title: Text("Update Questions"),
         actions: [
           IconButton(
             onPressed: () {
