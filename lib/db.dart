@@ -4,9 +4,9 @@ import "package:path_provider/path_provider.dart";
 
 Future<Database> db() async {
   final appDocumentDir = await getApplicationDocumentsDirectory();
-  final database = sqlite3.open(join(appDocumentDir.path, 'questions2.db'));
+  final database = sqlite3.open(join(appDocumentDir.path, 'questions3.db'));
   database.execute(
-    "CREATE TABLE if not exists questions4 (id varchar(64), question text, answer1 text, answer2 text, answer3 text, answer4 text, correctAnswer text )",
+    "CREATE TABLE if not exists questions55 (id varchar(64), question text, answer1 text, answer2 text, answer3 text, answer4 text, correctAnswer text )",
   );
   return database;
 }
