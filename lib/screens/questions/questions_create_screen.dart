@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_friday_test/screens/questions/questions_screen.dart';
 import 'package:flutter_friday_test/states/question_state.dart';
 import "package:go_router/go_router.dart";
 import "package:provider/provider.dart";
@@ -6,7 +7,7 @@ import "package:provider/provider.dart";
 class QuestionsCreateScreen extends StatefulWidget {
   const QuestionsCreateScreen({super.key});
 
-  static const String routeName = "/questions";
+  static const String routeName = "/questions_create";
   static void Function(BuildContext context) go = (context) =>
       context.go(routeName);
   static void Function(BuildContext context) push = (context) =>
@@ -46,8 +47,6 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
       final answer4 = questionController.text;
       final correctAnswer = questionController.text;
 
-      // do something
-
       context.read<QuestionState>().createQuestion(
         question: question,
         answer1: answer1,
@@ -56,7 +55,15 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
         answer4: answer4,
         correctAnswer: correctAnswer,
       );
+
+      formKey.currentState!.reset();
     }
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("Question updated")));
+
+    QuestionsScreen.go(context);
   }
 
   @override

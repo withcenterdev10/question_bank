@@ -1,10 +1,18 @@
 import "dart:math";
 
+import "package:flutter_friday_test/db.dart";
 import "package:sqlite3/sqlite3.dart";
 
 class QuestionService {
-  QuestionService({required this.db});
-  Database db;
+  late Database _db;
+  QuestionService() {
+    initDB();
+  }
+
+  Future<void> initDB() async {
+    _db = await db();
+  }
+
   final rand = Random();
 
   void createQuestion({
@@ -17,7 +25,7 @@ class QuestionService {
   }) {
     final id = rand.nextInt(1000000);
 
-    db.execute(
+    _db.execute(
       "insert into questions (id, question, answer1, answer2, answer3, answer4, correctAnswer) values ($id, $question, $answer1, $answer2, $answer3, $answer4, $correctAnswer)",
     );
 
@@ -25,7 +33,28 @@ class QuestionService {
   }
 
   void fetchQuestions() {
-    ResultSet questions = db.select("select * from questions");
+    ResultSet questions = _db.select("select * from questions");
     print(questions);
+  }
+
+  ResultSet fetchQuestion({required String questionId}) {
+    ResultSet questions = _db.select(
+      "select * from questions WHERE id = $questionId",
+    );
+    return questions;
+  }
+
+  void updateQuestion({
+    required String questionId,
+    required String question,
+    required String answer1,
+    required String answer2,
+    required String answer3,
+    required String answer4,
+    required String correctAnswer,
+  }) {
+    _db.execute(
+      "UPDATE questions SET question = '$question', answer1 = '$answer1', answer2 = '$answer2', answer3 = '$answer3', answer4 = '$answer4', correctAnswer = '$correctAnswer' WHERE id ='$questionId'",
+    );
   }
 }

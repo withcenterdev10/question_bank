@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_friday_test/screens/questions/questions_create_screen.dart';
+import 'package:flutter_friday_test/screens/questions/questions_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,6 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 QuestionsCreateScreen.push(context);
               },
               child: Text("Go to create question page"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                QuestionsScreen.push(context);
+              },
+              child: Text("Go to view questions page"),
             ),
           ],
         ),

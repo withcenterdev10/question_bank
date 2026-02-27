@@ -1,4 +1,5 @@
 class QuestionModel {
+  final String? id;
   final String question;
   final String answer1;
   final String answer2;
@@ -7,6 +8,7 @@ class QuestionModel {
   final String correctAnswer;
 
   QuestionModel({
+    this.id,
     required this.question,
     required this.answer1,
     required this.answer2,
@@ -32,4 +34,57 @@ class QuestionModel {
       correctAnswer: correctAnswer ?? this.correctAnswer,
     );
   }
+
+  factory QuestionModel.fromJson(Map<String, dynamic> json) {
+    if (json case {
+      "id": final String id,
+      "question": final String question,
+      "answer1": final String answer1,
+      "answer2": final String answer2,
+      "answer3": final String answer3,
+      "answer4": final String answer4,
+      "correctAnswer": final String correctAnswer,
+    }) {
+      return QuestionModel(
+        id: id,
+        question: question,
+        answer1: answer1,
+        answer2: answer2,
+        answer3: answer3,
+        answer4: answer4,
+        correctAnswer: correctAnswer,
+      );
+    } else {
+      throw const FormatException(
+        'Unexpected JSON format (BlogModel.fromJson)',
+      );
+    }
+  }
 }
+
+  // factory BlogModel.fromJson(Map<String, dynamic> json) {
+  //   if (json case {
+  //     'id': final String id,
+  //     'blog': final String blog,
+  //     'title': final String title,
+  //     'image_urls': final List<dynamic>? imageUrls,
+  //     'created_at': final String createdAt,
+  //     'user': final Map<String, dynamic> user,
+  //   }) {
+  //     return BlogModel(
+  //       id: id,
+  //       blog: blog,
+  //       title: title,
+  //       imageUrls: imageUrls != null
+  //           ? imageUrls.map((img) => img as String).toList()
+  //           : [],
+  //       comments: [],
+  //       createdAt: createdAt,
+  //       user: BlogUserModel.formJson(user),
+  //     );
+    // } else {
+    //   throw const FormatException(
+    //     'Unexpected JSON format (BlogModel.fromJson)',
+    //   );
+    // }
+  // }

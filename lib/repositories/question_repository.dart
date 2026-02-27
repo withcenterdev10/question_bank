@@ -32,4 +32,39 @@ class QuestionRepository {
       correctAnswer: correctAnswer,
     );
   }
+
+  QuestionModel updateQuestion(
+    QuestionModel model, {
+    required String questionId,
+    required String question,
+    required String answer1,
+    required String answer2,
+    required String answer3,
+    required String answer4,
+    required String correctAnswer,
+  }) {
+    service.updateQuestion(
+      questionId: questionId,
+      question: question,
+      answer1: answer1,
+      answer2: answer2,
+      answer3: answer3,
+      answer4: answer4,
+      correctAnswer: correctAnswer,
+    );
+
+    return model.copyWith(
+      question: question,
+      answer1: answer1,
+      answer2: answer2,
+      answer3: answer3,
+      answer4: answer4,
+      correctAnswer: correctAnswer,
+    );
+  }
+
+  QuestionModel fetchQuestion({required String questionId}) {
+    final question = service.fetchQuestion(questionId: questionId);
+    return QuestionModel.fromJson(question[0]);
+  }
 }

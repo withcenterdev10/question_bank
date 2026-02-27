@@ -7,7 +7,15 @@ import 'package:flutter_friday_test/states/question_state.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  final questionService = QuestionService();
+  final questionRepository = QuestionRepository(service: questionService);
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => QuestionState(repository: questionRepository),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -17,28 +25,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State<MyApp> {
-  late final QuestionService questionService;
-  late final QuestionRepository questionRepository;
-  late final QuestionState questionState;
-
-  Future<void> init() async {
-    final database = await db();
-    questionService = QuestionService(db: database);
-    questionRepository = QuestionRepository(service: questionService);
-    questionState = QuestionState(repository: questionRepository);
-  }
-
-  @override
-  initState() {
-    super.initState();
-    init();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => questionState,
-      child: MaterialApp.router(routerConfig: router),
-    );
+    return MaterialApp.router(routerConfig: router);
   }
 }
