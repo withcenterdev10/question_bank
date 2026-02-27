@@ -6,7 +6,7 @@ import 'package:flutter_friday_test/screens/questions/questions_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final router = GoRouter(
-  initialLocation: QuestionsScreen.routeName,
+  initialLocation: HomeScreen.routeName,
   routes: [
     GoRoute(
       path: HomeScreen.routeName,
