@@ -14,14 +14,18 @@ class QuestionState extends ChangeNotifier {
     required String answer2,
     required String answer3,
     required String answer4,
+    required String correctAnswer,
   }) {
-    final something = repository.createQuestion(
+    final newQuestion = repository.createQuestion(
       question: question,
       answer1: answer1,
       answer2: answer2,
       answer3: answer3,
       answer4: answer4,
+      correctAnswer: correctAnswer,
     );
+
+    state = [...?state, newQuestion];
     notifyListeners();
   }
 }

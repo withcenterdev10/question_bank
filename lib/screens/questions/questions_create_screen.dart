@@ -23,6 +23,7 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
   final answer2Controller = TextEditingController();
   final answer3Controller = TextEditingController();
   final answer4Controller = TextEditingController();
+  final correctAnswer = TextEditingController();
 
   @override
   void dispose() {
@@ -31,6 +32,7 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
     answer2Controller.dispose();
     answer3Controller.dispose();
     answer4Controller.dispose();
+    correctAnswer.dispose();
 
     super.dispose();
   }
@@ -42,6 +44,7 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
       final answer2 = questionController.text;
       final answer3 = questionController.text;
       final answer4 = questionController.text;
+      final correctAnswer = questionController.text;
 
       // do something
 
@@ -51,6 +54,7 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
         answer2: answer2,
         answer3: answer3,
         answer4: answer4,
+        correctAnswer: correctAnswer,
       );
     }
   }
@@ -122,9 +126,21 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
                 },
               ),
 
+              TextFormField(
+                controller: correctAnswer,
+                decoration: InputDecoration(labelText: "Correct answer"),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "correct answer is required";
+                  }
+
+                  return null;
+                },
+              ),
+
               ElevatedButton(
                 onPressed: () {
-                  // context.read<QuestionState>().createQuestion
+                  onSubmit(context);
                 },
                 child: Text("Submit"),
               ),

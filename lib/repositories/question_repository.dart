@@ -12,6 +12,7 @@ class QuestionRepository {
     required String answer2,
     required String answer3,
     required String answer4,
+    required String correctAnswer,
   }) {
     service.createQuestion(
       question: question,
@@ -19,6 +20,7 @@ class QuestionRepository {
       answer2: answer2,
       answer3: answer3,
       answer4: answer4,
+      correctAnswer: correctAnswer,
     );
 
     return QuestionModel(
@@ -27,6 +29,7 @@ class QuestionRepository {
       answer2: answer2,
       answer3: answer3,
       answer4: answer4,
+      correctAnswer: correctAnswer,
     );
   }
 }

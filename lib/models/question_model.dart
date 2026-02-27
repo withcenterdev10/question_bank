@@ -4,6 +4,7 @@ class QuestionModel {
   final String answer2;
   final String answer3;
   final String answer4;
+  final String correctAnswer;
 
   QuestionModel({
     required this.question,
@@ -11,6 +12,7 @@ class QuestionModel {
     required this.answer2,
     required this.answer3,
     required this.answer4,
+    required this.correctAnswer,
   });
 
   QuestionModel copyWith({
@@ -19,6 +21,7 @@ class QuestionModel {
     String? answer2,
     String? answer3,
     String? answer4,
+    String? correctAnswer,
   }) {
     return QuestionModel(
       question: question ?? this.question,
@@ -26,6 +29,7 @@ class QuestionModel {
       answer2: answer2 ?? this.answer2,
       answer3: answer3 ?? this.answer3,
       answer4: answer4 ?? this.answer4,
+      correctAnswer: correctAnswer ?? this.correctAnswer,
     );
   }
 }
