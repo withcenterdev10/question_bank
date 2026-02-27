@@ -6,7 +6,7 @@ Future<Database> db() async {
   final appDocumentDir = await getApplicationDocumentsDirectory();
   final database = sqlite3.open(join(appDocumentDir.path, 'questions2.db'));
   database.execute(
-    "CREATE TABLE questions3 (id varchar(64), question text, answer1 text, answer2 text, answer3 text, answer4 text, correctAnswer text )",
+    "CREATE TABLE questions4 (id varchar(64), question text, answer1 text, answer2 text, answer3 text, answer4 text, correctAnswer text )",
   );
   return database;
 }
