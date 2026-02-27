@@ -19,11 +19,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    return ChangeNotifierProvider(
+      create: (context) => UserState(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
+    ;
   }
 }
 
@@ -44,11 +48,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   initState() {
     super.initState();
+
     _initDB();
   }
 
   Future<void> _initDB() async {
     final libraryDir = await getLibraryDirectory();
+    // getApplicationDocumentsDirectory()
 
     db = sqlite3.open(join(libraryDir.path, 'test.db'));
 
@@ -68,43 +74,44 @@ class _MyHomePageState extends State<MyHomePage> {
     ResultSet res = db.select("select * from users");
 
     print(res);
+
+    if (mounted) {
+      final user = Provider.of<UserState>(context, listen: false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => UserState(),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
 
-          title: Text(widget.title),
-        ),
-        body: PageWrapper(
-          child: Center(
-            child: Column(
-              spacing: 8,
-              mainAxisAlignment: .center,
-              children: [
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(labelText: "Name"),
-                ),
-                TextFormField(
-                  controller: passwordController,
-                  decoration: InputDecoration(labelText: "Password"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    db.execute(
-                      "insert into users (id, password, name) values ('b', '${nameController.text}', 'c')",
-                    );
-                  },
-                  child: Text("Submit"),
-                ),
-                const Text('You have pushed the button this many times:'),
-              ],
-            ),
+        title: Text(widget.title),
+      ),
+      body: PageWrapper(
+        child: Center(
+          child: Column(
+            spacing: 8,
+            mainAxisAlignment: .center,
+            children: [
+              TextFormField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: "Name"),
+              ),
+              TextFormField(
+                controller: passwordController,
+                decoration: InputDecoration(labelText: "Password"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  db.execute(
+                    "insert into users (id, password, name) values ('b', '${nameController.text}', 'c')",
+                  );
+                },
+                child: Text("Submit"),
+              ),
+              const Text('You have pushed the button this many times:'),
+            ],
           ),
         ),
       ),
