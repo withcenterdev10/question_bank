@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_friday_test/db.dart';
-import 'package:flutter_friday_test/models/question_model.dart';
 import 'package:flutter_friday_test/screens/home/home_screen.dart';
 import 'package:flutter_friday_test/screens/questions/questions_screen.dart';
 import 'package:flutter_friday_test/states/question_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:sqlite3/sqlite3.dart';
 
 class QuestionViewScreen extends StatefulWidget {
   const QuestionViewScreen({super.key, required this.questionId});
@@ -37,20 +34,18 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
   initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final question = context.read<QuestionState>().fetchQuestion(
-        widget.questionId,
-      );
+    final question = context.read<QuestionState>().fetchQuestion(
+      widget.questionId,
+    );
 
-      questionController = TextEditingController(text: question.question);
-      answer1Controller = TextEditingController(text: question.answer1);
-      answer2Controller = TextEditingController(text: question.answer2);
-      answer3Controller = TextEditingController(text: question.answer3);
-      answer4Controller = TextEditingController(text: question.answer4);
-      correctAnswerController = TextEditingController(
-        text: question.correctAnswer,
-      );
-    });
+    questionController = TextEditingController(text: question.question);
+    answer1Controller = TextEditingController(text: question.answer1);
+    answer2Controller = TextEditingController(text: question.answer2);
+    answer3Controller = TextEditingController(text: question.answer3);
+    answer4Controller = TextEditingController(text: question.answer4);
+    correctAnswerController = TextEditingController(
+      text: question.correctAnswer,
+    );
   }
 
   @override
@@ -61,7 +56,6 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
     answer3Controller.dispose();
     answer4Controller.dispose();
     correctAnswerController.dispose();
-    // context.read<QuestionState>().clearState();
     super.dispose();
   }
 

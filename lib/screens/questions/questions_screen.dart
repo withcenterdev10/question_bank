@@ -24,7 +24,7 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreenState extends State<QuestionsScreen> {
   Future<void> fetchQuestions() async {
     final database = await db();
-    ResultSet res = database.select("select * from questions");
+    ResultSet res = database.select("select * from questions100");
     List<QuestionModel> questions = [];
 
     if (res.isNotEmpty) {

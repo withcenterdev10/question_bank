@@ -18,6 +18,7 @@ class QuestionModel {
   });
 
   QuestionModel copyWith({
+    String? questionId,
     String? question,
     String? answer1,
     String? answer2,
@@ -26,6 +27,7 @@ class QuestionModel {
     String? correctAnswer,
   }) {
     return QuestionModel(
+      id: questionId ?? this.id,
       question: question ?? this.question,
       answer1: answer1 ?? this.answer1,
       answer2: answer2 ?? this.answer2,

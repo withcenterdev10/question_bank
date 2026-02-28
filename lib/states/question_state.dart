@@ -44,7 +44,6 @@ class QuestionState extends ChangeNotifier {
   QuestionModel fetchQuestion(String questionId) {
     final question = repository.fetchQuestion(questionId: questionId);
     selectedQuestion = question;
-    notifyListeners();
     return question;
   }
 

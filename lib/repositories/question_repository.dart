@@ -54,6 +54,7 @@ class QuestionRepository {
     );
 
     return model.copyWith(
+      questionId: questionId,
       question: question,
       answer1: answer1,
       answer2: answer2,

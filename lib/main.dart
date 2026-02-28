@@ -7,6 +7,7 @@ import 'package:flutter_friday_test/states/question_state.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   final questionService = QuestionService();
   final questionRepository = QuestionRepository(service: questionService);
 

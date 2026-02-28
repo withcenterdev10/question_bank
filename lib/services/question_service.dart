@@ -26,20 +26,20 @@ class QuestionService {
     final id = rand.nextInt(1000000);
 
     _db.execute(
-      "insert into questions (id, question, answer1, answer2, answer3, answer4, correctAnswer) values ($id, $question, $answer1, $answer2, $answer3, $answer4, $correctAnswer)",
+      "insert into questions100 (id, question, answer1, answer2, answer3, answer4, correctAnswer) values ('$id', '$question', '$answer1', '$answer2', '$answer3', '$answer4', '$correctAnswer')",
     );
 
     fetchQuestions();
   }
 
   void fetchQuestions() {
-    ResultSet questions = _db.select("select * from questions");
+    ResultSet questions = _db.select("select * from questions100");
     print(questions);
   }
 
   ResultSet fetchQuestion({required String questionId}) {
     ResultSet questions = _db.select(
-      "select * from questions WHERE id = $questionId",
+      "select * from questions100 WHERE id = $questionId",
     );
     return questions;
   }
@@ -55,7 +55,7 @@ class QuestionService {
   }) {
     print("Question $question, Answer: $answer1 ");
     _db.execute(
-      "UPDATE questions SET question = '$question', answer1 = '$answer1', answer2 = '$answer2', answer3 = '$answer3', answer4 = '$answer4', correctAnswer = '$correctAnswer' WHERE id ='$questionId'",
+      "UPDATE questions100 SET question = '$question', answer1 = '$answer1', answer2 = '$answer2', answer3 = '$answer3', answer4 = '$answer4', correctAnswer = '$correctAnswer' WHERE id ='$questionId'",
     );
 
     fetchQuestions();
