@@ -41,15 +41,14 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
         widget.questionId,
       );
 
-      questionController = TextEditingController(text: question.question);
-      answer1Controller = TextEditingController(text: question.answer1);
-      answer2Controller = TextEditingController(text: question.answer2);
-      answer3Controller = TextEditingController(text: question.answer3);
-      answer4Controller = TextEditingController(text: question.answer4);
-      correctAnswerController = TextEditingController(
-        text: question.correctAnswer,
-      );
-    });
+    questionController = TextEditingController(text: question.question);
+    answer1Controller = TextEditingController(text: question.answer1);
+    answer2Controller = TextEditingController(text: question.answer2);
+    answer3Controller = TextEditingController(text: question.answer3);
+    answer4Controller = TextEditingController(text: question.answer4);
+    correctAnswerController = TextEditingController(
+      text: question.correctAnswer,
+    );
   }
 
   @override
@@ -60,7 +59,6 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
     answer3Controller.dispose();
     answer4Controller.dispose();
     correctAnswerController.dispose();
-    // context.read<QuestionState>().clearState();
     super.dispose();
   }
 
