@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_friday_test/screens/home/home_screen.dart';
 import 'package:flutter_friday_test/screens/questions/questions_screen.dart';
+import 'package:flutter_friday_test/services/question_service.dart';
 import 'package:flutter_friday_test/states/question_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -36,19 +37,24 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
   initState() {
     super.initState();
 
-    scheduleMicrotask(() {
-      final question = context.read<QuestionState>().fetchQuestion(
+    scheduleMicrotask(() async {
+      final question = await QuestionService.instance.fetchQuestion(
         widget.questionId,
       );
 
-    questionController = TextEditingController(text: question.question);
-    answer1Controller = TextEditingController(text: question.answer1);
-    answer2Controller = TextEditingController(text: question.answer2);
-    answer3Controller = TextEditingController(text: question.answer3);
-    answer4Controller = TextEditingController(text: question.answer4);
-    correctAnswerController = TextEditingController(
-      text: question.correctAnswer,
-    );
+      if (mounted) {
+        QuestionState.of(context).setSelectedQuestion(question);
+      }
+
+      questionController = TextEditingController(text: question.question);
+      answer1Controller = TextEditingController(text: question.answer1);
+      answer2Controller = TextEditingController(text: question.answer2);
+      answer3Controller = TextEditingController(text: question.answer3);
+      answer4Controller = TextEditingController(text: question.answer4);
+      correctAnswerController = TextEditingController(
+        text: question.correctAnswer,
+      );
+    });
   }
 
   @override
@@ -62,7 +68,7 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
     super.dispose();
   }
 
-  void onSubmit(BuildContext context) {
+  void onSubmit(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       final question = questionController.text;
       final answer1 = answer1Controller.text;
@@ -71,7 +77,7 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
       final answer4 = answer4Controller.text;
       final correctAnswer = correctAnswerController.text;
 
-      context.read<QuestionState>().updatedQuestion(
+      final updatedQuestion = await QuestionService.instance.updateQuestion(
         questionId: widget.questionId,
         question: question,
         answer1: answer1,
@@ -81,13 +87,15 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
         correctAnswer: correctAnswer,
       );
 
-      formKey.currentState!.reset();
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Question updated")));
-
-      QuestionsScreen.go(context);
+      if (context.mounted) {
+        formKey.currentState!.reset();
+        QuestionState.of(context).updatedQuestion(updatedQuestion);
+        QuestionState.of(context).clearSelectedQuestion();
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Question updated")));
+        QuestionsScreen.go(context);
+      }
     }
   }
 

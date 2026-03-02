@@ -16,46 +16,51 @@ class QuestionRepository {
     final db = await _db.connect();
 
     db.execute(
-      "insert into questions (id, question, answer1, answer2, answer3, answer4, correctAnswer) values ('$id', '${question.question}', '${question.answer1}', '${question.answer2}', '${question.answer3}', '${question.answer4}', '${question.correctAnswer}')",
+      "insert into $tableName (id, question, answer1, answer2, answer3, answer4, correctAnswer) values ('$id', '${question.question}', '${question.answer1}', '${question.answer2}', '${question.answer3}', '${question.answer4}', '${question.correctAnswer}')",
     );
-    final newQuestion = await fetchLatest();
-    return QuestionModel.fromJson(newQuestion);
+    return await fetchLatest();
   }
 
-  void fetchQuestions() async {
+  Future<QuestionModel> updateQuestion(QuestionModel question) async {
     final db = await _db.connect();
-    ResultSet questions = db.select("select * from questions");
-    print(questions);
+    db.execute(
+      "UPDATE $tableName SET question = '${question.question}', answer1 = '${question.answer1}', answer2 = '${question.answer2}', answer3 = '${question.answer3}', answer4 = '${question.answer4}', correctAnswer = '${question.correctAnswer}' WHERE id ='${question.id}'",
+    );
+    return await fetchQuestionById(question.id!);
   }
 
-  Future<Row> fetchLatest() async {
+  Future<QuestionModel> fetchLatest() async {
     final db = await _db.connect();
-    ResultSet question = db.select("select * from questions LIMIT 1");
-    return question.single;
+    ResultSet question = db.select("select * from $tableName LIMIT 1");
+    return QuestionModel.fromJson(question.single);
+  }
+
+  Future<QuestionModel> fetchQuestionById(String id) async {
+    final db = await _db.connect();
+    ResultSet question = db.select("select * from $tableName WHERE id=$id");
+    return QuestionModel.fromJson(question.single);
   }
 
   Future<ResultSet> fetchQuestion({required String questionId}) async {
     final db = await _db.connect();
     ResultSet questions = db.select(
-      "select * from questions WHERE id = $questionId",
+      "select * from $tableName WHERE id = $questionId",
     );
     return questions;
   }
 
-  void updateQuestion({
-    required String questionId,
-    required String question,
-    required String answer1,
-    required String answer2,
-    required String answer3,
-    required String answer4,
-    required String correctAnswer,
-  }) async {
+  Future<List<QuestionModel>> fetchQuestions() async {
     final db = await _db.connect();
-    db.execute(
-      "UPDATE questions SET question = '$question', answer1 = '$answer1', answer2 = '$answer2', answer3 = '$answer3', answer4 = '$answer4', correctAnswer = '$correctAnswer' WHERE id ='$questionId'",
-    );
+    ResultSet res = db.select("select * from $tableName");
 
-    fetchQuestions();
+    List<QuestionModel> questions = [];
+
+    if (res.isNotEmpty) {
+      for (var question in res) {
+        questions.add(QuestionModel.fromJson(question));
+      }
+    }
+
+    return questions;
   }
 }

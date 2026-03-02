@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_friday_test/db.dart';
 import 'package:flutter_friday_test/models/question_model.dart';
 import 'package:flutter_friday_test/screens/home/home_screen.dart';
 import 'package:flutter_friday_test/screens/questions/question_view_screen.dart';
+import 'package:flutter_friday_test/services/question_service.dart';
 import 'package:flutter_friday_test/states/question_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:sqlite3/sqlite3.dart' hide Row;
 
 class QuestionsScreen extends StatefulWidget {
   const QuestionsScreen({super.key});
@@ -24,27 +23,14 @@ class QuestionsScreen extends StatefulWidget {
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
-  Future<void> fetchQuestions() async {
-    final database = await db();
-    ResultSet res = database.select("select * from questions100");
-    List<QuestionModel> questions = [];
-
-    if (res.isNotEmpty) {
-      for (var question in res) {
-        questions.add(QuestionModel.fromJson(question));
-      }
-    }
-
-    if (mounted) {
-      context.read<QuestionState>().setQuestions(questions);
-    }
-  }
-
   @override
   initState() {
     super.initState();
-    scheduleMicrotask(() {
-      fetchQuestions();
+    scheduleMicrotask(() async {
+      final questions = await QuestionService.instance.fetchQuestions();
+      if (mounted) {
+        QuestionState.of(context).setQuestions(questions);
+      }
     });
   }
 
@@ -54,7 +40,6 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       if (p.state == null) return [];
       return p.state!;
     });
-    print("questions: ${questions.length}");
 
     return Scaffold(
       appBar: AppBar(
