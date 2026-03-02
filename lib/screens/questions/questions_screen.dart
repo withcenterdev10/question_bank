@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_friday_test/db.dart';
 import 'package:flutter_friday_test/models/question_model.dart';
@@ -41,7 +43,7 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   @override
   initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    scheduleMicrotask(() {
       fetchQuestions();
     });
   }

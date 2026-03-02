@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_friday_test/screens/questions/questions_screen.dart';
+import 'package:flutter_friday_test/services/question_service.dart';
 import 'package:flutter_friday_test/states/question_state.dart';
 import "package:go_router/go_router.dart";
-import "package:provider/provider.dart";
 
 class QuestionsCreateScreen extends StatefulWidget {
   const QuestionsCreateScreen({super.key});
@@ -38,7 +38,7 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
     super.dispose();
   }
 
-  void onSubmit(BuildContext context) {
+  void onSubmit(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       final question = questionController.text;
       final answer1 = questionController.text;
@@ -47,7 +47,7 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
       final answer4 = questionController.text;
       final correctAnswer = questionController.text;
 
-      context.read<QuestionState>().createQuestion(
+      final newQuestion = await QuestionService.instance.createQuestion(
         question: question,
         answer1: answer1,
         answer2: answer2,
@@ -56,14 +56,13 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
         correctAnswer: correctAnswer,
       );
 
+      if (context.mounted) {
+        QuestionsScreen.go(context);
+        QuestionState.of(context).createQuestion(newQuestion);
+      }
+
       formKey.currentState!.reset();
     }
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Question updated")));
-
-    QuestionsScreen.go(context);
   }
 
   @override

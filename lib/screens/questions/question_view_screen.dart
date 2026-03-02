@@ -1,12 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_friday_test/db.dart';
-import 'package:flutter_friday_test/models/question_model.dart';
 import 'package:flutter_friday_test/screens/home/home_screen.dart';
 import 'package:flutter_friday_test/screens/questions/questions_screen.dart';
 import 'package:flutter_friday_test/states/question_state.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:sqlite3/sqlite3.dart';
 
 class QuestionViewScreen extends StatefulWidget {
   const QuestionViewScreen({super.key, required this.questionId});
@@ -37,7 +36,7 @@ class _QuestionViewScreenState extends State<QuestionViewScreen> {
   initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    scheduleMicrotask(() {
       final question = context.read<QuestionState>().fetchQuestion(
         widget.questionId,
       );

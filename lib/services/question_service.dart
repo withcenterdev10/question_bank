@@ -1,21 +1,13 @@
-import "dart:math";
-
-import "package:flutter_friday_test/db.dart";
-import "package:sqlite3/sqlite3.dart";
+import 'package:flutter_friday_test/models/question_model.dart';
+import 'package:flutter_friday_test/repositories/question_repository.dart';
 
 class QuestionService {
-  late Database _db;
-  QuestionService() {
-    initDB();
-  }
+  QuestionService._();
+  static final QuestionService _instance = QuestionService._();
+  static QuestionService get instance => _instance;
+  final QuestionRepository _repository = QuestionRepository.instance;
 
-  Future<void> initDB() async {
-    _db = await db();
-  }
-
-  final rand = Random();
-
-  void createQuestion({
+  Future<QuestionModel> createQuestion({
     required String question,
     required String answer1,
     required String answer2,
@@ -23,28 +15,20 @@ class QuestionService {
     required String answer4,
     required String correctAnswer,
   }) {
-    final id = rand.nextInt(1000000);
-
-    _db.execute(
-      "insert into questions (id, question, answer1, answer2, answer3, answer4, correctAnswer) values ($id, $question, $answer1, $answer2, $answer3, $answer4, $correctAnswer)",
+    final newQuestion = QuestionModel(
+      question: question,
+      answer1: answer1,
+      answer2: answer2,
+      answer3: answer3,
+      answer4: answer4,
+      correctAnswer: correctAnswer,
     );
 
-    fetchQuestions();
+    return _repository.createQuestion(newQuestion);
   }
 
-  void fetchQuestions() {
-    ResultSet questions = _db.select("select * from questions");
-    print(questions);
-  }
-
-  ResultSet fetchQuestion({required String questionId}) {
-    ResultSet questions = _db.select(
-      "select * from questions WHERE id = $questionId",
-    );
-    return questions;
-  }
-
-  void updateQuestion({
+  void updateQuestion(
+    QuestionModel model, {
     required String questionId,
     required String question,
     required String answer1,
@@ -53,11 +37,28 @@ class QuestionService {
     required String answer4,
     required String correctAnswer,
   }) {
-    print("Question $question, Answer: $answer1 ");
-    _db.execute(
-      "UPDATE questions SET question = '$question', answer1 = '$answer1', answer2 = '$answer2', answer3 = '$answer3', answer4 = '$answer4', correctAnswer = '$correctAnswer' WHERE id ='$questionId'",
-    );
+    // service.updateQuestion(
+    //   questionId: questionId,
+    //   question: question,
+    //   answer1: answer1,
+    //   answer2: answer2,
+    //   answer3: answer3,
+    //   answer4: answer4,
+    //   correctAnswer: correctAnswer,
+    // );
 
-    fetchQuestions();
+    // return model.copyWith(
+    //   question: question,
+    //   answer1: answer1,
+    //   answer2: answer2,
+    //   answer3: answer3,
+    //   answer4: answer4,
+    //   correctAnswer: correctAnswer,
+    // );
+  }
+
+  void fetchQuestion({required String questionId}) {
+    // final question = service.fetchQuestion(questionId: questionId);
+    // return QuestionModel.fromJson(question[0]);
   }
 }
