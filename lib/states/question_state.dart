@@ -9,12 +9,8 @@ class QuestionState extends ChangeNotifier {
   static QuestionState Function(BuildContext context) of = (context) =>
       context.read<QuestionState>();
 
-  // QuestionState({required this.repository});
-  // QuestionRepository repository;
-
-  void clearState() {
+  void clearSelectedQuestion() {
     selectedQuestion = null;
-    notifyListeners();
   }
 
   void createQuestion(QuestionModel question) {
@@ -23,8 +19,13 @@ class QuestionState extends ChangeNotifier {
   }
 
   void setQuestions(List<QuestionModel> questions) {
-    // state = questions;
-    // notifyListeners();
+    state = questions;
+    notifyListeners();
+  }
+
+  void setSelectedQuestion(QuestionModel question) {
+    selectedQuestion = question;
+    notifyListeners();
   }
 
   QuestionModel fetchQuestion(String questionId) {
@@ -42,35 +43,16 @@ class QuestionState extends ChangeNotifier {
     );
   }
 
-  void updatedQuestion({
-    required String questionId,
-    required String question,
-    required String answer1,
-    required String answer2,
-    required String answer3,
-    required String answer4,
-    required String correctAnswer,
-  }) {
-    // final updatedQuestion = repository.updateQuestion(
-    //   selectedQuestion!,
-    //   questionId: questionId,
-    //   question: question,
-    //   answer1: answer1,
-    //   answer2: answer2,
-    //   answer3: answer3,
-    //   answer4: answer4,
-    //   correctAnswer: correctAnswer,
-    // );
+  void updatedQuestion(QuestionModel question) {
+    final updatedQuestionList = state!.map((q) {
+      if (q.id == question.id) {
+        return question;
+      } else {
+        return question;
+      }
+    }).toList();
 
-    // final updatedQuestionList = state!.map((question) {
-    //   if (question.id == questionId) {
-    //     return updatedQuestion;
-    //   } else {
-    //     return question;
-    //   }
-    // }).toList();
-
-    // state = updatedQuestionList;
-    // notifyListeners();
+    state = updatedQuestionList;
+    notifyListeners();
   }
 }

@@ -27,8 +27,7 @@ class QuestionService {
     return _repository.createQuestion(newQuestion);
   }
 
-  void updateQuestion(
-    QuestionModel model, {
+  Future<QuestionModel> updateQuestion({
     required String questionId,
     required String question,
     required String answer1,
@@ -37,28 +36,24 @@ class QuestionService {
     required String answer4,
     required String correctAnswer,
   }) {
-    // service.updateQuestion(
-    //   questionId: questionId,
-    //   question: question,
-    //   answer1: answer1,
-    //   answer2: answer2,
-    //   answer3: answer3,
-    //   answer4: answer4,
-    //   correctAnswer: correctAnswer,
-    // );
+    final questionToUpdate = QuestionModel(
+      id: questionId,
+      question: question,
+      answer1: answer1,
+      answer2: answer2,
+      answer3: answer3,
+      answer4: answer4,
+      correctAnswer: correctAnswer,
+    );
 
-    // return model.copyWith(
-    //   question: question,
-    //   answer1: answer1,
-    //   answer2: answer2,
-    //   answer3: answer3,
-    //   answer4: answer4,
-    //   correctAnswer: correctAnswer,
-    // );
+    return _repository.updateQuestion(questionToUpdate);
   }
 
-  void fetchQuestion({required String questionId}) {
-    // final question = service.fetchQuestion(questionId: questionId);
-    // return QuestionModel.fromJson(question[0]);
+  Future<List<QuestionModel>> fetchQuestions() async {
+    return await _repository.fetchQuestions();
+  }
+
+  Future<QuestionModel> fetchQuestion(String questionId) async {
+    return await _repository.fetchQuestionById(questionId);
   }
 }

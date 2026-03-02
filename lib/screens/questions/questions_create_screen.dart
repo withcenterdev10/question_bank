@@ -24,7 +24,7 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
   final answer2Controller = TextEditingController();
   final answer3Controller = TextEditingController();
   final answer4Controller = TextEditingController();
-  final correctAnswer = TextEditingController();
+  final correctAnswerController = TextEditingController();
 
   @override
   void dispose() {
@@ -33,7 +33,7 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
     answer2Controller.dispose();
     answer3Controller.dispose();
     answer4Controller.dispose();
-    correctAnswer.dispose();
+    correctAnswerController.dispose();
 
     super.dispose();
   }
@@ -41,11 +41,11 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
   void onSubmit(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       final question = questionController.text;
-      final answer1 = questionController.text;
-      final answer2 = questionController.text;
-      final answer3 = questionController.text;
-      final answer4 = questionController.text;
-      final correctAnswer = questionController.text;
+      final answer1 = answer1Controller.text;
+      final answer2 = answer2Controller.text;
+      final answer3 = answer3Controller.text;
+      final answer4 = answer4Controller.text;
+      final correctAnswer = correctAnswerController.text;
 
       final newQuestion = await QuestionService.instance.createQuestion(
         question: question,
@@ -133,7 +133,7 @@ class _QuestionsScreenState extends State<QuestionsCreateScreen> {
               ),
 
               TextFormField(
-                controller: correctAnswer,
+                controller: correctAnswerController,
                 decoration: InputDecoration(labelText: "Correct answer"),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
